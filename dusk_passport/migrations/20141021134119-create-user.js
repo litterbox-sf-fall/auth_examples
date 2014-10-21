@@ -2,7 +2,7 @@ module.exports = {
   up: function(migration, DataTypes, done) {
     console.log("Running migration for users");
     // add altering commands here, calling 'done' when finished
-    migration.createTable('users',
+    migration.createTable('Users',
       {id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
       updatedAt: DataTypes.DATE,
       username: {
         type: DataTypes.STRING,
-        unique: true, 
+        unique: true,
         allowNull: false
       },
       password: {
@@ -25,7 +25,7 @@ module.exports = {
   down: function(migration, DataTypes, done) {
     // add reverting commands here, calling 'done' when finished
 
-    migration.dropTable('users')
+    migration.dropTable('Users')
       .complete(done);
   }
 };

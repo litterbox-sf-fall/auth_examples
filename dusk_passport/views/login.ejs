@@ -1,14 +1,12 @@
-<% include partials/header.ejs %>  
+<% include partials/header.ejs %>
 
 	<h1>Login </h1>
 
-	<% if (typeof message !== 'undefined') { %>
-		<p style = "color:red;">
+	<% if (message.length > 0) { %>
+		<div class = "alert alert-danger">
 		<%= message %>
-		</p>
+		</div>
 	<% } %>
-
-	<br>
 		<form action="/login" method = "post">
 
 			<p>
@@ -21,5 +19,5 @@
 				<input type="submit" value="Log In" class ="btn btn-primary ">
 			</p>
 		</form>
-		<a href="/signup">Don't have an account? Create one here</a>	
-<% include partials/footer.ejs %>  
+		<a href="/signup">Don't have an account? Create one here</a>
+<% include partials/footer.ejs %>

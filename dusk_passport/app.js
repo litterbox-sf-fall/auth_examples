@@ -3,7 +3,7 @@ var express = require("express"),
   passport = require("passport"),
   passportLocal = require("passport-local"),
   cookieParser = require("cookie-parser"),
-  cookieSession = require("cookie-session"),
+  session = require("cookie-session"),
   db = require("./models/index"),
   flash = require('connect-flash'),
   app = express();
@@ -19,11 +19,13 @@ app.use(bodyParser.urlencoded({extended: false}) );
 // This session can expire and doesn't live on our server
 
 // The session middleware implements generic session functionality with in-memory storage by default. It allows you to specify other storage formats, though.
-// The cookieSession middleware, on the other hand, implements cookie-backed storage (that is, the entire session is serialized to the cookie, rather than just a session key. It should really only be used when session data is going to stay relatively small.
-// And, as I understand, it (cookie-session) should only be used when session data isn't sensitive. It is assumed that a user could inspect the contents of the session, but the middleware will detect when the data has been modified.
-app.use(cookieSession( {
+// The cookieSession middleware, on the other hand, implements cookie-backed storage (that is, the entire session is serialized to the
+  //cookie, rather than just a session key. It should really only be used when session data is going to stay relatively small.
+// And, as I understand, it (cookie-session) should only be used when session data isn't sensitive.
+// It is assumed that a user could inspect the contents of the session, but the middleware will detect when the data has been modified.
+app.use(session( {
   secret: 'thisismysecretkey',
-  name: 'session with cookie data',
+  name: 'chocolate chip',
   // this is in milliseconds
   maxage: 3600000
   })
@@ -42,7 +44,7 @@ passport.serializeUser(function(user, done){
 
 passport.deserializeUser(function(id, done){
   console.log("DESERIALIZED JUST RAN!");
-  db.user.find({
+  db.User.find({
       where: {
         id: id
       }
@@ -92,7 +94,7 @@ app.get('/home', function(req,res){
 // on submit, create a new users using form values
 app.post('/submit', function(req,res){
 
-  db.user.createNewUser(req.body.username, req.body.password,
+  db.User.createNewUser(req.body.username, req.body.password,
   function(err){
     res.render("signup", {message: err.message, username: req.body.username});
   },
