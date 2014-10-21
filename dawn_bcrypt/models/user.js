@@ -1,9 +1,10 @@
-var Sequelize = require("sequelize");
+"use strict";
+
 var bcrypt = require("bcrypt");
 var salt = bcrypt.genSaltSync(10);
 
 module.exports = function (sequelize, DataTypes){
-   var User = sequelize.define('user', {
+   var User = sequelize.define('User', {
      username: {
         type: DataTypes.STRING,
         validate: {
@@ -31,15 +32,19 @@ module.exports = function (sequelize, DataTypes){
         User.create({
             username: username,
             password: this.encryptPass(password)
-          }).error(function(error) {
-            if(error.username){
+          }).done(function(error,user) {
+            if(error) {
+              console.log(error)
+              if(error.name === 'SequelizeValidationError'){
               err({message: 'Your username should be at least 6 characters long', username: username});
             }
-            else{
+              else if(error.name === 'SequelizeUniqueConstraintError') {
               err({message: 'An account with that username already exists', username: username});
               }
-          }).success(function(user) {
-            success({message: 'Account created, please log in now'});
+            }
+            else{
+              success({message: 'Account created, please log in now'});
+            }
           });
         }
       },

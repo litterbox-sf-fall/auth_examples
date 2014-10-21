@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({extended: true}) );
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req,res){
-	res.render("index", {message: null});
+  res.render("index", {message: null});
 });
 
 app.get('/signup', function(req,res){
@@ -27,7 +27,7 @@ app.get('/home', function(req,res){
 // on submit, create a new users using form values
 app.post('/submit', function(req,res){
 
-  db.user.createNewUser(req.body.username, req.body.password,
+  db.User.createNewUser(req.body.username, req.body.password,
   function(err){
     res.render("signup", {message: err.message, username: req.body.username});
   },
@@ -39,7 +39,7 @@ app.post('/submit', function(req,res){
 // authenticate users when logging in
 app.post('/login', function(req,res){
 
-  db.user.authorize(req.body.username, req.body.password,
+  db.User.authorize(req.body.username, req.body.password,
   function(err){
     res.render("login", {message: err.message});
   },
